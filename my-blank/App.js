@@ -1,54 +1,114 @@
-import { StatusBar } from 'expo-status-bar';
-import { Button, StyleSheet, Text, View } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, Alert, StyleSheet, SafeAreaView } from 'react-native';
 
-const Texto = ({style})=> {
-      const [contenido, setContenido] = useState("Hola Mundo"); 
-      const actualizaTexto = () => {setContenido("State Modificado")};
-      return(
-        <Text style={[styles.text, style]} onPress={actualizaTexto} >{contenido}</Text>
-      );
-    };
+const App = () => {
+  const [nombre, setNombre] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [telefono, setTelefono] = useState('');
 
-export default function App() {
-  const [contenido, setTitle] = useState("Hola Mundo desde un botón"); 
-  const actualizaBtn = () => {setTitle("Botón modificado")};
+const mostrarAlerta = () => {
+  if (!nombre || !email || !password) {
+    Alert.alert(
+      'Error',
+      'Por favor, completa todos los campos obligatorios.',
+      [{ text: 'OK' }]
+    );
+  } else {
+    Alert.alert(
+      'Registro exitoso', 
+      `Nombre: ${nombre}\nEmail: ${email}`,
+      [{ text: 'OK', onPress: () => limpiarFormulario() }]
+    );
+  }
+};
+
+  const limpiarFormulario = () => {
+    setNombre('');
+    setEmail('');
+    setPassword('');
+    setTelefono('');
+  };
+
   return (
-    <View style={styles.container}>
-      <StatusBar style="auto" />
-      <Texto style={styles.verde}></Texto>
-      <Texto style={styles.amarillo}></Texto>
-      <Texto style={styles.azul}></Texto>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.formulario}>
+        <Text style={styles.titulo}>Registro de Usuario</Text>
+        
+        {/* TextInput para nombre */}
+        <TextInput
+          style={styles.input}
+          placeholder="Nombre completo *"
+          value={nombre}
+          onChangeText={setNombre}
+        />
 
-      <Button onPress={actualizaBtn} title={contenido} />
-      <StatusBar style="auto" />
-    </View>
+        {/* TextInput para email (con teclado de email) */}
+        <TextInput
+          style={styles.input}
+          placeholder="Email *"
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+
+        {/* TextInput para contraseña (secureTextEntry) */}
+        <TextInput
+          style={styles.input}
+          placeholder="Contraseña *"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry
+        />
+
+        {/* TextInput para teléfono (keyboardType numérico) */}
+        <TextInput
+          style={styles.input}
+          placeholder="Teléfono (opcional)"
+          value={telefono}
+          onChangeText={setTelefono}
+          keyboardType="phone-pad"
+        />
+
+        {/* Botón para enviar el formulario */}
+        <Button
+          title="Registrarse"
+          onPress={mostrarAlerta}
+        />
+      </View>
+    </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'orange',
-    alignItems: 'center',
     justifyContent: 'center',
-    justifyContent: "space-evenly",
-    flexDirection: "column",
-
+    alignItems: 'center',
+    padding: 20,
   },
-    
-  text: {
-    color: "white",
-    fontSize: 28,
-    width: 100,
-    height: 100,
-    textAlign: "center",
-
+  formulario: {
+    backgroundColor: '#f5f5f5',
+    padding: 20,
+    borderRadius: 10,
+    width: 420, 
   },
-
-  verde:{backgroundColor:'green',},
-  amarillo:{backgroundColor:'yellow',},
-  azul:{backgroundColor:'blue',},
-
-
+  titulo: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 15,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    backgroundColor: 'white',
+  },
 });
+
+export default App;
