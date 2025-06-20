@@ -1,114 +1,98 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet, SafeAreaView } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { Button, StyleSheet, Text, View, Alert, Platform } from "react-native";
+import React, { useState } from "react";
 
-const App = () => {
-  const [nombre, setNombre] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [telefono, setTelefono] = useState('');
-
-const mostrarAlerta = () => {
-  if (!nombre || !email || !password) {
-    Alert.alert(
-      'Error',
-      'Por favor, completa todos los campos obligatorios.',
-      [{ text: 'OK' }]
-    );
-  } else {
-    Alert.alert(
-      'Registro exitoso', 
-      `Nombre: ${nombre}\nEmail: ${email}`,
-      [{ text: 'OK', onPress: () => limpiarFormulario() }]
-    );
+const showAlert = (message) => {
+  if (Platform.OS === "web") {
+    window.alert(message);
+  }else {
+    Alert.alert("Alert", message,);
   }
-};
+}
+      
 
-  const limpiarFormulario = () => {
-    setNombre('');
-    setEmail('');
-    setPassword('');
-    setTelefono('');
-  };
-
+export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.formulario}>
-        <Text style={styles.titulo}>Registro de Usuario</Text>
-        
-        {/* TextInput para nombre */}
-        <TextInput
-          style={styles.input}
-          placeholder="Nombre completo *"
-          value={nombre}
-          onChangeText={setNombre}
-        />
+    <View style = {styles.container}>
+      <Text style = {styles.title}>Botones en React Native</Text>
 
-        {/* TextInput para email (con teclado de email) */}
-        <TextInput
-          style={styles.input}
-          placeholder="Email *"
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-
-        {/* TextInput para contraseña (secureTextEntry) */}
-        <TextInput
-          style={styles.input}
-          placeholder="Contraseña *"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
-
-        {/* TextInput para teléfono (keyboardType numérico) */}
-        <TextInput
-          style={styles.input}
-          placeholder="Teléfono (opcional)"
-          value={telefono}
-          onChangeText={setTelefono}
-          keyboardType="phone-pad"
-        />
-
-        {/* Botón para enviar el formulario */}
+      <View style = {styles.section}>
         <Button
-          title="Registrarse"
-          onPress={mostrarAlerta}
+          title="Presioname"
+          onPress={() => showAlert("Boton presionado!")}
         />
       </View>
-    </SafeAreaView>
+      <View style = {styles.section}>
+        <Text style = {styles.description}>Boton de color:</Text>
+        <Button
+          title="Presioname"
+          color="#f194ff"
+          onPress={() => showAlert("Boton de color presionado!")}
+        />
+      </View>
+      <View style = {styles.section}>
+        <Text style = {styles.description}>Dos botones</Text>
+        <Button
+          title="Desabilitado"
+          onPress={() => showAlert("No funciona :(")}
+        />
+      </View>
+      <View style = {styles.section}>
+        <Text style = {styles.description}></Text>
+        <View style = {styles.buttonRow}>
+          <Button
+            title="Izquierda"
+            onPress={() => showAlert("Boton Izquierdo presionado")}
+          />
+        
+          <View style = {styles.buttonSpacer} />
+            <Button
+              title="Derecha"
+              onPress={() => showAlert("Boton Derecho presionado")}
+            />
+          
+        </View>
+      </View>
+      
+    </View>
   );
-};
+}
+
+
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     padding: 20,
+    backgroundColor: "#ffffff",
+    justifyContent: "center",
   },
-  formulario: {
-    backgroundColor: '#f5f5f5',
-    padding: 20,
-    borderRadius: 10,
-    width: 420, 
+  
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 30,
+    color: "#000000",
   },
-  titulo: {
-    fontSize: 20,
-    fontWeight: 'bold',
+
+  section: {
     marginBottom: 20,
-    textAlign: 'center',
   },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-    borderRadius: 5,
-    backgroundColor: 'white',
+
+  description: {
+    fontSize: 16,
+    marginBottom: 10,
+    color: "#333333",
+  },
+
+  buttonRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  buttonSpacer: {
+    width: 10
   },
 });
-
-export default App;
