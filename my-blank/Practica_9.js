@@ -1,40 +1,49 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet, SafeAreaView } from 'react-native';
+import React, { useState } from "react";
+import {View, Text, TextInput, Button, Alert, StyleSheet, SafeAreaView, Platform,} from "react-native";
 
 const App = () => {
-  const [nombre, setNombre] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [telefono, setTelefono] = useState('');
+  const [nombre, setNombre] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [telefono, setTelefono] = useState("");
 
-const mostrarAlerta = () => {
-  if (!nombre || !email || !password) {
-    Alert.alert(
-      'Error',
-      'Por favor, completa todos los campos obligatorios.',
-      [{ text: 'OK' }]
-    );
-  } else {
-    Alert.alert(
-      'Registro exitoso', 
-      `Nombre: ${nombre}\nEmail: ${email}`,
-      [{ text: 'OK', onPress: () => limpiarFormulario() }]
-    );
-  }
-};
+  const mostrarAlerta = () => {
+    if (!nombre || !email || !password) {
+      if (Platform.OS === "web") {
+        window.alert("Por favor, completa todos los campos obligatorios.");
+      } else {
+        Alert.alert(
+          "Error",
+          "Por favor, completa todos los campos obligatorios.",
+          [{ text: "OK" }]
+        );
+      }
+    } else {
+      if (Platform.OS === "web") {
+        window.alert(`Registro exitoso\nNombre: ${nombre}\nEmail: ${email}`);
+        limpiarFormulario();
+      } else {
+        Alert.alert(
+          "Registro exitoso",
+          `Nombre: ${nombre}\nEmail: ${email}`,
+          [{ text: "OK", onPress: () => limpiarFormulario() }]
+        );
+      }
+    }
+  };
 
   const limpiarFormulario = () => {
-    setNombre('');
-    setEmail('');
-    setPassword('');
-    setTelefono('');
+    setNombre("");
+    setEmail("");
+    setPassword("");
+    setTelefono("");
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.formulario}>
         <Text style={styles.titulo}>Registro de Usuario</Text>
-        
+
         {/* TextInput para nombre */}
         <TextInput
           style={styles.input}
@@ -72,10 +81,7 @@ const mostrarAlerta = () => {
         />
 
         {/* Botón para enviar el formulario */}
-        <Button
-          title="Registrarse"
-          onPress={mostrarAlerta}
-        />
+        <Button title="Registrarse" onPress={mostrarAlerta} />
       </View>
     </SafeAreaView>
   );
@@ -84,30 +90,28 @@ const mostrarAlerta = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
     padding: 20,
   },
   formulario: {
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
     padding: 20,
     borderRadius: 10,
-    width: 420, 
   },
   titulo: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     marginBottom: 15,
     paddingHorizontal: 10,
     borderRadius: 5,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
 });
 
